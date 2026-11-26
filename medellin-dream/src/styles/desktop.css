@@ -1,0 +1,86 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+:root { font-family: Inter, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif; color-scheme: dark; background: #101927; color: #e3ecf8; }
+body { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: .48; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--accent, #56d6ab); outline-offset: 2px; }
+button { border: 0; }
+a { color: var(--accent); }
+h1,h2,h3,p { margin: 0; }
+svg { flex-shrink: 0; vertical-align: middle; }
+.desktop { isolation: isolate; display: flex; flex-direction: column; width: 100%; height: 100dvh; min-height: 320px; overflow: hidden; position: relative; color: var(--text); font: var(--font-size) var(--font), "Noto Sans CJK SC", sans-serif; background: linear-gradient(180deg,#0c152b55,#0a13223d 60%,#0a132292),var(--wallpaper) center 56% / cover no-repeat,var(--bg); }
+.system-bar { flex: 0 0 43px; display: flex; gap: 16px; align-items: center; padding: 0 22px; background: #0a1423eb; border-bottom: 1px solid #8ca6c424; z-index: 2; }
+.system-brand { background: none; padding: 0; display: flex; gap: 8px; align-items: center; font-weight: 700; white-space: nowrap; }
+.system-brand span { color: #89e9d2; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 8px; border: 1px solid #70d9bd50; background: #62dab019; }
+.system-rule,.corner-divider { height: 15px; width: 1px; background: #9bb5d236; }
+.system-name { color: #acbad0; font-size: .9em; white-space: nowrap; }
+.system-right,.status-icons { display: flex; align-items: center; gap: 16px; }
+.system-right { margin-left: auto; }
+.status-icons { gap: 11px; color: #aabbd0; }
+.system-time { white-space: nowrap; color: #c8d4e3; font-size: .88em; font-variant-numeric: tabular-nums; }
+.system-time b { margin-left: 7px; font-weight: 600; }
+.desktop-stage { position: relative; flex: 1; min-height: 0; isolation: isolate; }
+.desktop-shortcuts { display: grid; position: absolute; top: 23px; left: 19px; width: max-content; max-width: calc(100% - 38px); max-height: calc(100% - 25px); overflow: auto; scrollbar-width: thin; grid-auto-columns: clamp(53px,6.4vw,84px); grid-auto-rows: 80px; gap: 7px 3px; align-items: start; }
+.desktop-shortcuts.column { display: flex; gap: 4px; flex-direction: column; overflow: auto; max-height: calc(100% - 25px); width: auto; }
+.desktop-link { display: grid; gap: 5px; justify-items: center; align-content: start; min-height: 72px; width: 100%; padding: 6px 2px; color: #f2f6fb; background: transparent; border: 1px solid transparent; border-radius: 9px; font-size: .88em; line-height: 1.25; text-shadow: 0 2px 6px #071323; pointer-events: auto; }
+.desktop-link:hover,.desktop-link:focus-visible { background: #9dc9ed24; border-color: #aad3fa33; }
+.app-icon { width: 43px; height: 43px; display: inline-grid; place-items: center; color: white; border-radius: 12px; border: 1px solid #f8fcff39; background: linear-gradient(150deg,var(--icon-top,#648fa5),var(--icon-bottom,#37536f)); box-shadow: inset 0 1px #ffffff31,0 3px 7px #07142350; flex: none; }
+.app-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
+.icon-chat { --icon-top:#45d6a0; --icon-bottom:#11966f; }
+.icon-browser { --icon-top:#5baaff; --icon-bottom:#365fd0; }
+.icon-notes { --icon-top:#ffc56e; --icon-bottom:#c98232; }
+.icon-photos { --icon-top:#c982ee; --icon-bottom:#824eae; }
+.icon-computer { --icon-top:#6584a4; --icon-bottom:#354c70; }
+.icon-trash { --icon-top:#7392a8; --icon-bottom:#425b73; }
+.icon-music { --icon-top:#ec88a5; --icon-bottom:#ac4e75; }
+.icon-calendar { --icon-top:#ed847a; --icon-bottom:#a6505e; }
+.icon-files { --icon-top:#63c5cf; --icon-bottom:#2e809a; }
+.icon-settings { --icon-top:#91a1b9; --icon-bottom:#52657f; }
+.desktop-corner { position:absolute; right: 23px; bottom: 14px; display: flex; align-items: center; gap: 8px; color: #bed5e6a8; font-size: .84em; text-shadow: 0 1px 6px #061320; }
+.dock-bar { position: relative; display: grid; place-items: center; flex: 0 0 77px; z-index: 1; }
+.dock { display: flex; align-items: center; gap: 9px; padding: 7px 10px 8px; max-width: calc(100% - 12px); overflow: auto; scrollbar-width: thin; border: 1px solid #afd1f132; background: #131f35bd; backdrop-filter: blur(17px); border-radius: 18px; box-shadow: 0 9px 30px #050a174a,inset 0 1px #ffffff10; }
+.dock-item { position: relative; background: transparent; padding: 1px 1px 5px; display: grid; justify-items: center; }
+.dock-item .app-icon { width: 37px; height: 37px; border-radius: 10px; transition: transform .16s; }
+.dock-item .app-icon svg { width: 20px; }
+.dock-item:hover .app-icon { transform: translateY(-3px); }
+.dock-item i { position: absolute; bottom: 0; border-radius: 50%; width: 4px; height: 4px; }
+.dock-item.running i { background: #a9c1d6; }
+.dock-item.active i { background: var(--accent); box-shadow: 0 0 7px var(--accent); }
+.fiction-label { position: absolute; bottom: 22px; left: 23px; background: none; padding: 4px; color: #c1d0df; font-size: .86em; display: flex; gap: 6px; align-items: center; }
+.fiction-label:hover,.system-brand:hover { color: var(--accent); }
+.app-window { position: absolute; display: flex; flex-direction: column; min-height: 0; border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius); box-shadow: 0 24px 62px #030812a6,0 2px 12px #0509137d; overflow: hidden; animation: appear .17s ease-out; }
+@keyframes appear { from { opacity: .2; transform: translateY(5px) scale(.99); } to { opacity: 1; transform: none; } }
+.app-window.max { border-radius: 0; }
+.window-title { height: 43px; flex: 0 0 43px; display: flex; align-items: center; gap: 9px; padding-left: 13px; border-bottom: 1px solid var(--border); background: color-mix(in srgb,var(--surface) 79%,#0c121e); touch-action: none; user-select: none; }
+.window-title strong { font-weight: 600; font-size: .93em; }
+.title-icon .app-icon { width: 23px; height: 23px; border-radius: 6px; }
+.title-icon svg { width: 14px; }
+.window-controls { display: flex; height: 100%; margin-left: auto; }
+.window-controls button { display: grid; place-items: center; width: 42px; background: none; color: #aab9ca; }
+.window-controls button:hover { background: #bbd5ff17; color: #fff; }
+.window-controls button:last-child:hover { background: #9b4058; }
+.window-body { flex: 1; min-height: 0; min-width: 0; overflow: auto; container-type: inline-size; }
+.resize-handle { position: absolute; bottom: 0; right: 0; width: 16px; height: 16px; cursor: nwse-resize; touch-action: none; background: linear-gradient(135deg,transparent 68%,#a4bbd36e 70%,transparent 75%); }
+.empty-state,.unavailable { display: grid; place-content: center; justify-items: center; text-align: center; gap: 15px; padding: 20px; height: 100%; min-height: 90px; color: #adbcd1; }
+.primary-button,.secondary-button { padding: 8px 14px; border-radius: 7px; font-weight: 600; }
+.primary-button { background: var(--accent,#56d6ab); color: #0c2924; }
+.primary-button:hover { filter: brightness(1.11); }
+.secondary-button { background: #bcd0ec16; color: inherit; border: 1px solid #a2b7d437; }
+.secondary-button:hover { background: #bcd0ec28; }
+.modal-backdrop { position: absolute; inset: 0; z-index: 9; background: #050a15ba; display: grid; place-items: center; padding: 15px; }
+.game-dialog { position: relative; display: grid; gap: 16px; padding: 24px; max-width: min(100%, 510px); width: 100%; max-height: 92%; overflow: auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 20px 58px #060b159c; }
+.game-dialog h2 { font-size: 1.25em; padding-right: 18px; }
+.game-dialog p { line-height: 1.6; }
+.game-dialog button.primary-button { justify-self: start; }
+@media (max-width: 630px) {
+  .system-bar { padding: 0 10px; gap: 8px; }
+  .system-right { gap: 8px; }
+  .status-icons,.system-rule,.system-name,.desktop-corner { display: none; }
+  .dock-bar { flex-basis: 62px; }
+  .fiction-label { display: none; }
+  .desktop-shortcuts { top: 9px; left: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .001ms !important; transition-duration: .001ms !important; } }
+.game-dialog:focus { outline: none; }

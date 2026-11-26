@@ -1,0 +1,4 @@
+node_modules/
+dist/
+data/draft.json
+data/*.tmp

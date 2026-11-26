@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "theme": {
+    "wallpaper": "", "background": "#121f32", "surface": "#192538", "text": "#e3ecf8",
+    "accent": "#56d6ab", "font": "system-ui", "fontSize": 14, "gap": 12, "border": "#33445b", "radius": 12,
+    "windowWidth": 960, "windowHeight": 610, "layout": "grid"
+  },
+  "apps": [
+    {"id":"chat","name":"绿泡泡","icon":"chat","type":"chat","enabled":true,"dock":true,"column":1,"row":1},
+    {"id":"browser","name":"浏览器","icon":"browser","type":"browser","enabled":true,"dock":true,"column":1,"row":2},
+    {"id":"trash","name":"回收站","icon":"trash","type":"trash","enabled":true,"dock":false,"column":2,"row":2},
+    {"id":"notes","name":"工作备忘录","icon":"notes","type":"notes","enabled":true,"dock":true,"column":1,"row":3},
+    {"id":"computer","name":"此电脑","icon":"computer","type":"unavailable","enabled":false,"dock":false,"column":2,"row":1},
+    {"id":"photos","name":"相册","icon":"photos","type":"unavailable","enabled":false,"dock":true,"column":1,"row":4},
+    {"id":"music","name":"音乐","icon":"music","type":"unavailable","enabled":false,"dock":true,"column":2,"row":3},
+    {"id":"calendar","name":"日历","icon":"calendar","type":"unavailable","enabled":false,"dock":false,"column":2,"row":4},
+    {"id":"settings","name":"设置","icon":"settings","type":"unavailable","enabled":false,"dock":true,"column":2,"row":5},
+    {"id":"files","name":"文件管理器","icon":"files","type":"unavailable","enabled":false,"dock":true,"column":1,"row":5}
+  ],
+  "contacts": [], "threads": [], "posts": [], "assets": [], "pages": [], "search": [], "accounts": [],
+  "notes": [], "trash": [], "events": [], "flags": [], "clues": [], "home": "", "notFound": ""
+}
