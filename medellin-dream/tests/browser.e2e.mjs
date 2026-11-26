@@ -138,7 +138,7 @@ test('A–D · 实际运行、界面操作、保存重启及生产隔离', { tim
       await btn(web,'提交关键词搜索').click()
       await waitText(web,'未找到匹配的资料')
       await btn(web,'浏览器主页').click()
-      await waitText(web,'星屿搜索')
+      await waitText(web,'Aurora 搜索')
       await btn(desktop,'工作备忘录').click()
       await page.getByRole('region',{name:'工作备忘录'}).getByText(/40350947/).waitFor()
       await btn(desktop,'回收站').click()

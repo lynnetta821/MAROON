@@ -138,7 +138,7 @@ export function Desktop({ project, persistent = false, initialApp, initialChat, 
           if (event.currentTarget.getAttribute('src') !== wallpaper) event.currentTarget.src = wallpaper
         }} />}
       <div className="system-bar">
-        <button className="system-brand" onClick={() => setDialog({ kind: 'about', target: '' })} title="关于星屿 OS"><span><Sparkles size={16} /></span>星屿 OS</button>
+        <button className="system-brand" onClick={() => setDialog({ kind: 'about', target: '' })} title="关于Aurora"><span><Sparkles size={16} /></span>Aurora</button>
         <span className="system-rule" />
         <span className="system-name">麦德林之梦</span>
         <div className="system-right">
@@ -154,7 +154,7 @@ export function Desktop({ project, persistent = false, initialApp, initialChat, 
             <AppIcon icon={app.icon} app={app} project={project} active={activeId === app.id} /><span>{app.name}</span>
           </button>)}
         </div>
-        <div className="desktop-corner"><RadioTower size={14} /> <span>星屿终端</span><span className="corner-divider" /><span>本地会话</span></div>
+        <div className="desktop-corner"><RadioTower size={14} /> <span>Aurora 终端</span><span className="corner-divider" /><span>本地会话</span></div>
         {manager.windows.map(item => {
           const app = project.apps.find(a => a.id === item.id)
           if (!app) return null

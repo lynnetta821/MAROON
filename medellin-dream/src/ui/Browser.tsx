@@ -113,7 +113,7 @@ export function Browser() {
     </header>
     <div className="web-viewport" ref={viewport}>
       {page ? <WebPage key={page.id + '/' + refresh} page={page} /> : location.kind === 'home' ? <section className="browser-home">
-        <span className="section-symbol"><Globe2 size={32} /></span><h1>星屿搜索</h1>
+        <span className="section-symbol"><Globe2 size={32} /></span><h1>Aurora 搜索</h1>
         {searchForm(true)}<p>搜索结果与地址均来自虚构的游戏内站点。</p>
       </section> : location.kind === 'search' ? <section className="search-results">
         <h1>搜索结果</h1><p>「{location.value}」共 {results.length} 条结果</p>

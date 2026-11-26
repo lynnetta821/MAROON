@@ -57,5 +57,5 @@ export function DevShell() {
     })
     return () => { mounted = false }
   },[])
-  return data ? <LocalGame {...data} /> : <div className="boot-screen" role="status">正在启动星屿 OS…</div>
+  return data ? <LocalGame {...data} /> : <div className="boot-screen" role="status">正在启动 Aurora…</div>
 }

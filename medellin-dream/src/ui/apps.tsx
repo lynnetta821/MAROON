@@ -32,7 +32,7 @@ export function GameDialog({ dialog, close }: { dialog: ModalView; close: () => 
   if (dialog.kind === 'card') title = '好友名片'
   if (dialog.kind === 'image') title = '图片查看器'
   if (dialog.kind === 'file') title = asset?.name || '文件'
-  if (dialog.kind === 'about') title = '关于星屿 OS'
+  if (dialog.kind === 'about') title = '关于Aurora'
   return <div className="modal-backdrop" onClick={close}>
     <section ref={panel} tabIndex={-1} className={`game-dialog ${dialog.kind === 'image' ? 'image-dialog' : ''}`} role="dialog" aria-modal="true" aria-label={title} onClick={e => e.stopPropagation()} onKeyDown={e => {
       if (e.key === 'Escape') close()
