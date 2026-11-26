@@ -10,7 +10,10 @@ button { border: 0; }
 a { color: var(--accent); }
 h1,h2,h3,p { margin: 0; }
 svg { flex-shrink: 0; vertical-align: middle; }
-.desktop { isolation: isolate; display: flex; flex-direction: column; width: 100%; height: 100dvh; min-height: 320px; overflow: hidden; position: relative; color: var(--text); font: var(--font-size) var(--font), "Noto Sans CJK SC", sans-serif; background: linear-gradient(180deg,#0c152b55,#0a13223d 60%,#0a132292),var(--wallpaper) center 56% / cover no-repeat,var(--bg); }
+.desktop { isolation: isolate; display: flex; flex-direction: column; width: 100%; height: 100dvh; min-height: 320px; overflow: hidden; position: relative; color: var(--text); font: var(--font-size) var(--font), "Noto Sans CJK SC", sans-serif; background: var(--bg); }
+.desktop-wallpaper,.desktop::before { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.desktop-wallpaper { z-index: -2; object-fit: cover; object-position: center 56%; }
+.desktop::before { content: ""; z-index: -1; background: linear-gradient(180deg,#0c152b55,#0a13223d 60%,#0a132292); }
 .system-bar { flex: 0 0 43px; display: flex; gap: 16px; align-items: center; padding: 0 22px; background: #0a1423eb; border-bottom: 1px solid #8ca6c424; z-index: 2; }
 .system-brand { background: none; padding: 0; display: flex; gap: 8px; align-items: center; font-weight: 700; white-space: nowrap; }
 .system-brand span { color: #89e9d2; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 8px; border: 1px solid #70d9bd50; background: #62dab019; }

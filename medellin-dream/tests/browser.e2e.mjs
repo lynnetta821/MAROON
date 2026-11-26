@@ -412,6 +412,27 @@ test('A–D · 实际运行、界面操作、保存重启及生产隔离', { tim
         await waitText(window,'最近会话')
       } finally { await mobile.close() }
     })
+    await t.test('壁纸 · 大幅 JPEG 上传、保存、刷新与背景模式切换', async () => {
+      await openModule('主题样式')
+      const wallpaper = page.locator('.studio-canvas .desktop-wallpaper')
+      const asset = join(root,'src/art/northern-lights-3840x2160-9864.jpg')
+      await props().getByLabel('上传壁纸',{exact:true}).setInputFiles(asset)
+      const checkImage = async () => {
+        await page.locator('.studio-canvas .desktop-wallpaper[src^="data:image/jpeg"]').waitFor()
+        assert.equal(await wallpaper.evaluate(async img => { await img.decode(); return img.naturalWidth }),3840)
+        assert.equal(await wallpaper.evaluate(img => getComputedStyle(img).objectFit),'cover')
+      }
+      await checkImage()
+      await btn(studio(),'保存草稿').click()
+      await waitText(studio(),'项目草稿已保存')
+      await page.reload()
+      await openModule('主题样式')
+      await checkImage()
+      await choose(props(),'背景模式','纯色')
+      await wallpaper.waitFor({state:'detached'})
+      await choose(props(),'背景模式','壁纸')
+      await checkImage()
+    })
     await t.test('生产 · 静态构建不含工作室、写入接口和开发测试内容', async () => {
       await build({ root:fixture })
       const bundles = (await readdir(join(fixture,'dist','assets'))).filter(name => name.endsWith('.js'))

@@ -124,7 +124,7 @@ export function Desktop({ project, persistent = false, initialApp, initialChat, 
   const desktopStyle = {
     '--bg': theme.background, '--surface': theme.surface, '--text': theme.text, '--accent': theme.accent,
     '--border': theme.border, '--radius': theme.radius + 'px', '--gap': theme.gap + 'px',
-    '--font': theme.font, '--font-size': theme.fontSize + 'px', '--wallpaper': theme.wallpaperMode === 'solid' ? 'none' : `url("${imageUrl(project, theme.wallpaper) || wallpaper}")`,
+    '--font': theme.font, '--font-size': theme.fontSize + 'px',
   } as CSSProperties
   const dockApps = project.apps.filter(app => app.dock || manager.windows.some(w => w.id === app.id))
   const liveWindows = manager.windows.filter(item => !item.hidden && project.apps.some(app => app.id === item.id))
@@ -133,6 +133,10 @@ export function Desktop({ project, persistent = false, initialApp, initialChat, 
   const date = clock.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' })
   return <GameContext.Provider value={{ project, state, chatRoute, browserRoute, entryRequest:initialEntry, messageRequest:initialMessage, act, modal: setDialog, add, read, login }}>
     <main className="desktop" style={desktopStyle}>
+      {theme.wallpaperMode !== 'solid' && <img className="desktop-wallpaper" alt="" aria-hidden="true"
+        src={imageUrl(project,theme.wallpaper) || wallpaper} onError={event => {
+          if (event.currentTarget.getAttribute('src') !== wallpaper) event.currentTarget.src = wallpaper
+        }} />}
       <div className="system-bar">
         <button className="system-brand" onClick={() => setDialog({ kind: 'about', target: '' })} title="关于星屿 OS"><span><Sparkles size={16} /></span>星屿 OS</button>
         <span className="system-rule" />
