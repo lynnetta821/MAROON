@@ -6,5 +6,18 @@
     <meta name="theme-color" content="#101d2c" />
     <title>麦德林之梦 · 星屿 OS</title>
   </head>
-  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
+  <body>
+    <main id="file-help" hidden style="max-width:42rem;margin:3rem auto;padding:0 1rem;font:1rem/1.65 system-ui,sans-serif">
+      <h1>启动《麦德林之梦》</h1>
+      <p>你正在浏览器中打开项目源码的入口文件。请先启动本地开发服务。</p>
+      <p>Windows 用户可安装 Node.js LTS，然后双击同一目录中的 <code>start-studio.cmd</code>。</p>
+      <p>也可以在此目录打开终端，先运行 <code>npm ci</code>，再运行 <code>npm run dev</code>。打开终端显示的地址并点击右上角的 ARG Studio。</p>
+      <p><a href="./demo/medellin-desktop-demo.html">只想试玩？打开单文件试玩版</a>。</p>
+    </main>
+    <script>
+      if (location.protocol === 'file:') document.getElementById('file-help').hidden = false
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
