@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Windows 用户也可以双击同目录的 `start-studio.cmd`。安装 Node.js LTS 后，启动器会在首次运行时安装项目依赖，并用本机浏览器打开工作室。编辑期间保留启动窗口。如果浏览器没有自动打开，请用终端显示的地址并加上 `/#studio`。
+Windows 用户也可以双击同目录的 `start-studio.cmd`。安装 Node.js LTS 后，启动器会在首次运行时安装项目依赖，并用本机浏览器打开工作室。编辑期间保留启动窗口。如果启动器没有找到项目，请粘贴解压后的 `medellin-dream` 文件夹路径。该文件夹应包含 `package.json` 和 `src`。如果浏览器没有自动打开，请用终端显示的地址并加上 `/#studio`。
 
 双击源码的 `index.html` 会显示启动说明。若只想离线试玩，可用浏览器打开 `demo/medellin-desktop-demo.html`。
 
