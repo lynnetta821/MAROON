@@ -1,4 +1,7 @@
 import { z } from 'zod'
+import { builtinIcons, iconRanges } from '../icons/registry.mjs'
+
+export { builtinIcons }
 
 const text = z.string().max(50000)
 const short = z.string().max(220)
@@ -15,7 +18,6 @@ const row = fields => z.object({ id, ...fields })
 const named = row({ name: short })
 const when = condition.optional()
 const maybeAction = action.optional()
-export const builtinIcons = ['chat','browser','trash','notes','computer','photos','music','calendar','settings','files']
 export const allowedMimes = ['image/png','image/jpeg','image/webp','image/gif','image/svg+xml','image/avif','audio/mpeg','audio/ogg','audio/wav','audio/mp4','audio/webm','audio/flac','text/plain','application/pdf','application/zip','application/octet-stream']
 export const maxAsset = 8 * 1024 * 1024
 export const maxProject = 36 * 1024 * 1024
@@ -28,13 +30,60 @@ const assetSchema = row({ name: short, category: short, mime: z.enum(allowedMime
       ctx.addIssue({ code: 'custom', path: ['data'], message: '素材必须是受支持的本地 Base64 文件' })
     }
   })
+const iconColors = z.object({
+  plate: color.optional(), border: color.optional(), fill: color.optional(), accent: color.optional(), stroke: color.optional()
+})
+const iconTheme = z.object({
+  size: number(...iconRanges.size).optional(),
+  radius: number(...iconRanges.radius).optional(),
+  opacity: number(...iconRanges.opacity).optional(),
+  scale: number(...iconRanges.scale).optional(),
+  glyphs: z.record(z.string().refine(key => builtinIcons.includes(key), '未注册的内置图标'),iconColors).optional()
+})
+const appIconFields = {
+  icon: ref,
+  iconMode: z.enum(['plate','original']).optional(),
+  iconColors: iconColors.optional()
+}
+const iconThemeFile = z.object({
+  format: z.literal('maroon-icon-theme'),
+  version: z.literal(1),
+  theme: iconTheme,
+  apps: z.array(row(appIconFields)).max(100),
+  assets: z.array(assetSchema).max(100)
+}).superRefine((file, ctx) => {
+  const assetIds = new Set(file.assets.map(asset => asset.id))
+  const appIds = new Set(file.apps.map(app => app.id))
+  if (assetIds.size !== file.assets.length || appIds.size !== file.apps.length) {
+    ctx.addIssue({ code:'custom', message:'图标主题含重复的应用或素材 ID' })
+  }
+  for (const asset of file.assets) {
+    if (!asset.mime.startsWith('image/')) {
+      ctx.addIssue({ code:'custom', path:['assets',asset.id], message:'图标素材必须为图片' })
+    }
+  }
+  for (const app of file.apps) {
+    if (app.icon && !builtinIcons.includes(app.icon) && !assetIds.has(app.icon)) {
+      ctx.addIssue({ code:'custom', path:['apps',app.id], message:'图标主题缺少应用引用的素材' })
+    }
+  }
+})
+export function parseIconTheme(input) {
+  const result = iconThemeFile.safeParse(input)
+  if (!result.success) throw new Error(result.error.issues.slice(0,5).map(issue => (
+    [issue.path.join('.'),issue.message].filter(Boolean).join(' · ')
+  )).join('\n'))
+  return result.data
+}
+
 export const projectSchema = z.object({
   version: z.literal(1), theme: z.object({
+    icons: iconTheme.optional(),
     wallpaper: ref, wallpaperMode: z.enum(['image','solid']).optional(), background: color, surface: color, text: color, accent: color, border: color,
     font: short.regex(/^[\p{L}\p{N} ,'-]+$/u, '字体名称无效'), fontSize: number(11,30), gap: number(0,36), radius: number(0,40),
     windowWidth: number(320,2400), windowHeight: number(180,1600), layout: z.enum(['grid','column'])
   }),
-  apps: z.array(row({ name: short, icon: ref, type: z.enum(['chat','browser','notes','trash','unavailable']), enabled: z.boolean(), dock: z.boolean(),
+  apps: z.array(row({ name: short, ...appIconFields, type: z.enum(['chat','browser','notes','trash','unavailable']), enabled: z.boolean(), dock: z.boolean(),
     row: number(1,30), column: number(1,20), action: maybeAction })).max(100),
   contacts: z.array(row({ name: short, account: short, remark: short, avatar: ref, color, signature: text, region: short, bio: text,
     custom: z.array(z.object({ label: short, value: text, hidden: z.boolean() })), hidden: z.array(z.enum(['name','avatar','account','remark','signature','region','bio','moments','chat'])),

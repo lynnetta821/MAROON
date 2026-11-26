@@ -1,16 +1,15 @@
 import { Upload } from 'lucide-react'
 import type { Account, App, Asset, Entry, Page, Search, StoryEvent } from '../game/types'
-import { builtinIcons } from '../game/schema.mjs'
+import { iconRegistry, builtinIcons } from '../icons/registry.mjs'
 import type { Patch } from './ChatFields'
 import { ActionField, AssetField, ChoiceField, ConditionField, NumberField, SmallButton, SortList, TextField, Toggle, choice, choiceList, pageChoices, readAsset, useStudio } from './controls'
 
 export const appTypes = [choice('chat','绿泡泡'),choice('browser','浏览器'),choice('notes','工作备忘录'),choice('trash','回收站'),choice('unavailable','暂不可用')]
 export function AppFields({ row, patch }: { row: App; patch: Patch<App> }) {
   const { project } = useStudio()
-  const iconNames = ['聊天','浏览器','回收站','备忘录','电脑','相册','音乐','日历','设置','文件夹']
   return <>
     <TextField label="应用名称" value={row.name} onChange={name => patch({name})} />
-    <ChoiceField label="图标" value={row.icon} options={[...builtinIcons.map((id,i) => choice(id,iconNames[i])),
+    <ChoiceField label="图标" value={row.icon} options={[...builtinIcons.map(id => choice(id,iconRegistry[id as keyof typeof iconRegistry].name)),
       ...choiceList(project.assets.filter(a => a.mime.startsWith('image/')),a => a.name)]} onChange={icon => patch({icon})} />
     <ChoiceField label="默认打开内容" value={row.type} options={appTypes} onChange={type => patch({type:type as App['type']})} />
     <div className="studio-pair">

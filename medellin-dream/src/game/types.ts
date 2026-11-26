@@ -3,7 +3,10 @@ export type ActionKind = 'none' | 'app' | 'card' | 'chat' | 'moments' | 'image' 
 export type Action = { kind: ActionKind; target: string; value?: boolean; when?: Condition }
 export type Resource = { id: string }
 export type AppType = 'chat' | 'browser' | 'trash' | 'notes' | 'unavailable'
-export type App = Resource & { name: string; icon: string; type: AppType; enabled: boolean; dock: boolean; column: number; row: number; action?: Action }
+export type IconColors = { plate?: string; border?: string; fill?: string; accent?: string; stroke?: string }
+export type IconMode = 'plate' | 'original'
+export type IconTheme = { size?: number; radius?: number; opacity?: number; scale?: number; glyphs?: Record<string,IconColors> }
+export type App = Resource & { name: string; icon: string; iconMode?: IconMode; iconColors?: IconColors; type: AppType; enabled: boolean; dock: boolean; column: number; row: number; action?: Action }
 export type Contact = Resource & {
   name: string; account: string; remark: string; avatar: string; color: string; signature: string; region: string; bio: string
   custom: { label: string; value: string; hidden: boolean }[]; hidden: string[]; initial: boolean; searchable: boolean
@@ -30,6 +33,7 @@ export type Entry = Resource & { title: string; body: string; date: string; asse
 export type Named = Resource & { name: string }
 export type StoryEvent = Named & { when?: Condition; actions: Action[] }
 export type Theme = {
+  icons?: IconTheme
   wallpaper: string; wallpaperMode?: 'image' | 'solid'; background: string; surface: string; text: string; accent: string; font: string; fontSize: number
   gap: number; border: string; radius: number; windowWidth: number; windowHeight: number; layout: 'grid' | 'column'
 }

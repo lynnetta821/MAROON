@@ -1,0 +1,15 @@
+.icon-library { display: grid; gap: 10px; padding: 11px; border-bottom: 1px solid var(--studio-line); }
+.icon-library-tabs,.icon-theme-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.icon-library-tabs button { flex: 1; }
+.icon-library-tabs button[aria-pressed="true"] { background: #294448; border-color: #558681; color: #d5f0eb; }
+.icon-library-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
+.icon-library-item { min-width: 0; padding: 7px 4px; display: grid; justify-items: center; align-content: center; gap: 5px; color: #d3e1ee; background: #182637; border: 1px solid #304258; border-radius: 7px; }
+.icon-library-item:hover,.icon-library-item[aria-pressed="true"] { background: #293e4c; border-color: #7d9bab; }
+.icon-library-item > span:last-child { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: .89em; }
+.icon-manager-fields,.icon-selection { display: grid; gap: 10px; }
+.icon-selection { padding: 9px; border: 1px solid var(--studio-line); border-radius: 7px; background: #111a2848; }
+.icon-selection > header { display: flex; align-items: center; gap: 9px; }
+.icon-selection > header h3 { font-size: 1.04em; overflow-wrap: anywhere; }
+.icon-selection > button,.icon-selection .file-label { justify-self: start; }
+.icon-color-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+.icon-color-fields input[type="color"] { cursor: pointer; }

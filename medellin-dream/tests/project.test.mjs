@@ -3,7 +3,7 @@ import test from 'node:test'
 import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { assetUsages, demoResources, parseProject, validatePublish, validateReferences } from '../src/game/schema.mjs'
+import { assetUsages, demoResources, parseIconTheme, parseProject, validatePublish, validateReferences } from '../src/game/schema.mjs'
 import { projectStore } from '../scripts/storage.mjs'
 
 const template = JSON.parse(await readFile(new URL('../data/default.json',import.meta.url),'utf8'))
@@ -52,4 +52,21 @@ test('写入磁盘、跨实例读取、拒绝版本冲突与越界保存路径',
     await assert.rejects(store.write('published',original),/普通文件/)
     assert.equal(await readFile(join(root,'outside.json'),'utf8'),'untouched')
   } finally { await rm(root,{recursive:true,force:true}) }
+})
+
+
+test('图标主题与项目配置保留外观、校验引用并兼容旧草稿', () => {
+  const project = fixture()
+  assert.equal(parseProject(project).theme.icons,undefined)
+  const theme = { size:49,radius:15,opacity:90,scale:97,glyphs:{contacts:{fill:'#8096B1'}} }
+  const app = { id:project.apps[0].id,icon:picture.id,iconMode:'plate',iconColors:{plate:'#ECEFF2'} }
+  const iconFile = { format:'maroon-icon-theme',version:1,theme,apps:[app],assets:[picture] }
+  assert.deepEqual(parseIconTheme(iconFile),iconFile)
+  assert.throws(() => parseIconTheme({ ...iconFile,assets:[] }),/缺少应用引用/)
+  assert.throws(() => parseIconTheme({ ...iconFile,theme:{...theme,size:200} }),/size/)
+  project.theme.icons = theme
+  project.apps[0] = { ...project.apps[0],...app }
+  project.assets.push(picture)
+  assert.deepEqual(validatePublish(project).theme.icons,theme)
+  assert.equal(validatePublish(project).apps[0].iconMode,'plate')
 })

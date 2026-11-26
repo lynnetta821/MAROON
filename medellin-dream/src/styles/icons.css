@@ -1,0 +1,46 @@
+.app-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  position: relative;
+  width: var(--icon-size);
+  max-width: 100%;
+  aspect-ratio: 1;
+  line-height: 0;
+  opacity: calc(var(--icon-alpha) * var(--icon-state-alpha, 1));
+  transition: opacity .15s ease, transform .15s ease;
+}
+.app-icon[data-context="dock"] { width: clamp(24px, calc(var(--icon-size) * .86), 42px); }
+.app-icon[data-context="title"] { width: 23px; vertical-align: middle; }
+.app-icon[data-context="gallery"] { width: clamp(27px, var(--icon-size), 48px); }
+.app-icon-vector, .app-icon-image { grid-area: 1 / 1; width: 100%; height: 100%; }
+.app-icon-vector { overflow: visible; }
+.app-icon-plate {
+  rx: var(--icon-radius);
+  fill: color-mix(in srgb, var(--icon-plate), white var(--icon-highlight, 0%));
+  stroke: color-mix(in srgb, var(--icon-border), var(--icon-stroke) var(--icon-edge, 0%));
+  stroke-width: 1;
+  filter: drop-shadow(0 1.4px .15px #1d304b18);
+}
+.app-icon-glyph {
+  --icon-inset: color-mix(in srgb, var(--icon-plate), white 58%);
+  fill: var(--icon-fill);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-origin: center;
+  transform: scale(var(--icon-scale));
+}
+.app-icon-image { object-fit: contain; }
+.app-icon:not([data-original]) .app-icon-image {
+  width: calc(63% * var(--icon-scale));
+  height: calc(63% * var(--icon-scale));
+}
+.app-icon[data-unavailable] { --icon-state-alpha: .87; }
+.app-icon[data-active] { --icon-edge: 60%; }
+:is(.desktop-link, .dock-item, .icon-library-item):is(:hover, :focus-visible) .app-icon {
+  --icon-highlight: 22%;
+  --icon-state-alpha: 1;
+}
+.icon-library-item[aria-pressed="true"] .app-icon { --icon-edge: 60%; }
+.dock-item:hover .app-icon { transform: translateY(-2px); }

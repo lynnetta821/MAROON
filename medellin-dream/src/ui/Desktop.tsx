@@ -147,14 +147,14 @@ export function Desktop({ project, persistent = false, initialApp, initialChat, 
         <div className={`desktop-shortcuts ${theme.layout}`}>
           {project.apps.map(app => <button key={app.id} className="desktop-link" onClick={() => launch(app)}
             style={theme.layout === 'grid' ? { gridColumn: app.column, gridRow: app.row } : undefined}>
-            <AppIcon icon={app.icon} project={project} /><span>{app.name}</span>
+            <AppIcon icon={app.icon} app={app} project={project} active={activeId === app.id} /><span>{app.name}</span>
           </button>)}
         </div>
         <div className="desktop-corner"><RadioTower size={14} /> <span>星屿终端</span><span className="corner-divider" /><span>本地会话</span></div>
         {manager.windows.map(item => {
           const app = project.apps.find(a => a.id === item.id)
           if (!app) return null
-          return <AppWindow key={item.id} item={item} manager={manager} title={app.name} icon={<AppIcon icon={app.icon} project={project} />}>
+          return <AppWindow key={item.id} item={item} manager={manager} title={app.name} icon={<AppIcon icon={app.icon} app={app} project={project} context="title" />}>
             {app.enabled && app.type !== 'unavailable' ? <AppContent app={app} active={!item.hidden && activeId === item.id} /> : <div className="unavailable">
               <CircleAlert size={30} /><strong>此应用暂不可用</strong><button className="primary-button" onClick={() => manager.close(item.id)}>确定</button>
             </div>}
@@ -168,7 +168,7 @@ export function Desktop({ project, persistent = false, initialApp, initialChat, 
             const opened = manager.windows.find(w => w.id === app.id)
             return <button key={app.id} className={`dock-item ${opened ? 'running' : ''} ${activeId === app.id ? 'active' : ''}`}
               aria-label={`任务栏 · ${app.name}`} title={app.name} onClick={() => opened ? manager.focus(app.id) : launch(app)}>
-              <AppIcon icon={app.icon} project={project} /><i />
+              <AppIcon icon={app.icon} app={app} project={project} context="dock" active={activeId === app.id} /><i />
             </button>
           })}
         </nav>

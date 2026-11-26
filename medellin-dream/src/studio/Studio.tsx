@@ -6,6 +6,7 @@ import { assetUsages, demoResources, maxProject, parseProject, validateReference
 import { Desktop } from '../ui/Desktop'
 import { StudioContext, ChoiceField, CheckList, Fold, SortList, TextField, choiceList, readAsset } from './controls'
 import { AccountFields, AppFields, AssetFields, EntryFields, EventFields, PageFields, SearchFields, ThemeFields } from './ProjectFields'
+import { IconFields, IconLibrary } from './IconManager'
 import { ContactFields, PostFields, ThreadFields } from './ChatFields'
 import { copyResource, getRows, makeResource, modules, removeDemo, replaceRows, resourceName } from './resources'
 import type { Item, Module } from './resources'
@@ -44,7 +45,7 @@ export function Studio({ draft, base, demo, canPublish, exit, publish }: Props) 
   const select = (id: string) => { setSelected(id); setMessage(''); setMobile('properties') }
   const add = () => {
     if (module === 'assets') { assetInput.current?.click(); return }
-    if (module === 'theme') return
+    if (module === 'theme' || module === 'icons') return
     const item = makeResource(module,project)
     if (item) {
       update(p => replaceRows(p,module,[...getRows(p,module),item]))
@@ -52,17 +53,17 @@ export function Studio({ draft, base, demo, canPublish, exit, publish }: Props) 
     }
   }
   const patch = <T extends Item>(fields: Partial<T>) => {
-    if (module === 'theme' || !row) return
+    if (module === 'theme' || module === 'icons' || !row) return
     update(p => replaceRows(p,module,getRows(p,module).map(r => r.id === row.id ? { ...r,...fields } as Item : r)))
   }
   const duplicate = () => {
-    if (module === 'theme' || !row) return
+    if (module === 'theme' || module === 'icons' || !row) return
     const copy = copyResource(row,project)
     update(p => replaceRows(p,module,[...getRows(p,module),copy]))
     select(copy.id)
   }
   const remove = () => {
-    if (module === 'theme' || !row) return
+    if (module === 'theme' || module === 'icons' || !row) return
     if (module === 'assets') {
       const usages = assetUsages(project,row.id)
       if (usages.length) { setNotice('素材仍被引用 · ' + usages.join('、')); return }
@@ -122,7 +123,7 @@ export function Studio({ draft, base, demo, canPublish, exit, publish }: Props) 
     finally { setWorking(false) }
   }
   const previewType = ['pages','search','accounts'].includes(module) ? 'browser' : module === 'notes' ? 'notes' : module === 'trash' ? 'trash' : 'chat'
-  const previewApp = module === 'apps' && row ? row.id : module === 'theme' ? undefined : project.apps.find(a => a.enabled && a.type === previewType)?.id
+  const previewApp = module === 'apps' && row ? row.id : (module === 'theme' || module === 'icons') ? undefined : project.apps.find(a => a.enabled && a.type === previewType)?.id
   const chatRoute: Omit<ChatRoute,'serial'> | undefined = module === 'groups' || module === 'direct'
     ? { view:'thread',target:row?.id || '' } : module === 'posts' ? { view:'moments',target:(row as Post | undefined)?.author || '' } : undefined
   const previewUrl = module === 'pages' ? (row as Page | undefined)?.url : module === 'search' || module === 'accounts' ?
@@ -131,6 +132,7 @@ export function Studio({ draft, base, demo, canPublish, exit, publish }: Props) 
   const previewEntry = module === 'notes' || module === 'trash' ? row?.id : undefined
   const renderFields = () => {
     if (module === 'theme') return <ThemeFields />
+    if (module === 'icons') return <IconFields selected={selected} defaults={base} />
     if (!row) return <div className="studio-hint">可从资源列表新建{names[module]}。</div>
     switch (module) {
       case 'apps': return <AppFields row={row as App} patch={patch<App>} />
@@ -181,7 +183,8 @@ export function Studio({ draft, base, demo, canPublish, exit, publish }: Props) 
             <nav className="studio-modules" aria-label="工作室模块">{modules.map(group => <div key={group.label}>
               <h2>{group.label}</h2><div>{group.items.map(([id,label]) => <button key={id} className={module === id ? 'selected' : ''} aria-current={module === id ? 'page' : undefined} onClick={() => selectModule(id)}>{label}</button>)}</div>
             </div>)}</nav>
-            {module !== 'theme' && <section className="resource-list">
+            {module === 'icons' && <IconLibrary selected={selected} select={select} />}
+            {module !== 'theme' && module !== 'icons' && <section className="resource-list">
               <header><h2>{names[module]}</h2><button className="studio-small" onClick={add}><Plus size={15} />{module === 'assets' ? '上传素材' : '新增'}</button></header>
               <label className="resource-search"><SearchIcon size={15} /><input type="search" aria-label="搜索资源" placeholder="搜索当前资源" value={query} onChange={e => setQuery(e.target.value)} /></label>
               <SortList label="资源排序" rows={filtered} selected={row?.id} identify={r => r.id}
@@ -226,7 +229,7 @@ export function Studio({ draft, base, demo, canPublish, exit, publish }: Props) 
             </div>
           </section>
           <aside className="studio-properties">
-            <header><div><small>{names[module]}</small><h2>{row ? resourceName(project,row) : module === 'theme' ? '全局主题' : '属性面板'}</h2></div>
+            <header><div><small>{names[module]}</small><h2>{row ? resourceName(project,row) : module === 'theme' ? '全局主题' : module === 'icons' ? 'Icon Manager' : '属性面板'}</h2></div>
               {row && <div className="property-tools">
                 <button className="studio-icon" title="复制资源" aria-label="复制资源" onClick={duplicate}><Copy size={16} /></button>
                 <button className="studio-icon danger" title="删除资源" aria-label="删除资源" onClick={remove}><Trash2 size={16} /></button>

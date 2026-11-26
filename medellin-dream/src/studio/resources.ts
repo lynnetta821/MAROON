@@ -2,7 +2,7 @@ import { makeId } from '../game/state'
 import type { Project, Resource } from '../game/types'
 
 export const modules = [
-  { label:'系统', items:[['apps','桌面应用'],['theme','主题样式'],['assets','素材库']] },
+  { label:'系统', items:[['apps','桌面应用'],['icons','图标管理'],['theme','主题样式'],['assets','素材库']] },
   { label:'Chat Studio', items:[['contacts','联系人'],['direct','单人聊天'],['groups','群聊'],['posts','朋友圈']] },
   { label:'游戏资料', items:[['pages','页面管理'],['search','搜索数据库'],['accounts','虚构账号'],['notes','工作备忘录'],['trash','回收站']] },
   { label:'剧情', items:[['events','剧情事件'],['flags','剧情状态'],['clues','线索']] }
@@ -10,9 +10,9 @@ export const modules = [
 export type Module = typeof modules[number]['items'][number][0]
 export type Collection = Exclude<keyof Project,'version' | 'theme' | 'home' | 'notFound'>
 export type Item = Project[Collection][number]
-export const collection = (module: Exclude<Module,'theme'>): Collection => module === 'direct' || module === 'groups' ? 'threads' : module
+export const collection = (module: Exclude<Module,'theme'|'icons'>): Collection => module === 'direct' || module === 'groups' ? 'threads' : module
 export function getRows(project: Project, module: Module): Item[] {
-  if (module === 'theme') return []
+  if (module === 'theme' || module === 'icons') return []
   const rows = project[collection(module)]
   return (module === 'direct' || module === 'groups') ?
     project.threads.filter(t => t.kind === (module === 'direct' ? 'direct' : 'group')) : rows
@@ -68,7 +68,7 @@ export function copyResource(row: Item, project: Project): Item {
   }
   return clone
 }
-export function replaceRows(project: Project, module: Exclude<Module,'theme'>, rows: Item[]): Project {
+export function replaceRows(project: Project, module: Exclude<Module,'theme'|'icons'>, rows: Item[]): Project {
   const key = collection(module)
   if (module === 'direct' || module === 'groups') {
     const kind = module === 'groups' ? 'group' : 'direct'

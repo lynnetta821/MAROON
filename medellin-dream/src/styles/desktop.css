@@ -26,25 +26,10 @@ svg { flex-shrink: 0; vertical-align: middle; }
 .desktop-shortcuts.column { display: flex; gap: 4px; flex-direction: column; overflow: auto; max-height: calc(100% - 25px); width: auto; }
 .desktop-link { display: grid; gap: 5px; justify-items: center; align-content: start; min-height: 72px; width: 100%; padding: 6px 2px; color: #f2f6fb; background: transparent; border: 1px solid transparent; border-radius: 9px; font-size: .88em; line-height: 1.25; text-shadow: 0 2px 6px #071323; pointer-events: auto; }
 .desktop-link:hover,.desktop-link:focus-visible { background: #9dc9ed24; border-color: #aad3fa33; }
-.app-icon { width: 43px; height: 43px; display: inline-grid; place-items: center; color: white; border-radius: 12px; border: 1px solid #f8fcff39; background: linear-gradient(150deg,var(--icon-top,#648fa5),var(--icon-bottom,#37536f)); box-shadow: inset 0 1px #ffffff31,0 3px 7px #07142350; flex: none; }
-.app-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
-.icon-chat { --icon-top:#45d6a0; --icon-bottom:#11966f; }
-.icon-browser { --icon-top:#5baaff; --icon-bottom:#365fd0; }
-.icon-notes { --icon-top:#ffc56e; --icon-bottom:#c98232; }
-.icon-photos { --icon-top:#c982ee; --icon-bottom:#824eae; }
-.icon-computer { --icon-top:#6584a4; --icon-bottom:#354c70; }
-.icon-trash { --icon-top:#7392a8; --icon-bottom:#425b73; }
-.icon-music { --icon-top:#ec88a5; --icon-bottom:#ac4e75; }
-.icon-calendar { --icon-top:#ed847a; --icon-bottom:#a6505e; }
-.icon-files { --icon-top:#63c5cf; --icon-bottom:#2e809a; }
-.icon-settings { --icon-top:#91a1b9; --icon-bottom:#52657f; }
 .desktop-corner { position:absolute; right: 23px; bottom: 14px; display: flex; align-items: center; gap: 8px; color: #bed5e6a8; font-size: .84em; text-shadow: 0 1px 6px #061320; }
 .dock-bar { position: relative; display: grid; place-items: center; flex: 0 0 77px; z-index: 1; }
 .dock { display: flex; align-items: center; gap: 9px; padding: 7px 10px 8px; max-width: calc(100% - 12px); overflow: auto; scrollbar-width: thin; border: 1px solid #afd1f132; background: #131f35bd; backdrop-filter: blur(17px); border-radius: 18px; box-shadow: 0 9px 30px #050a174a,inset 0 1px #ffffff10; }
 .dock-item { position: relative; background: transparent; padding: 1px 1px 5px; display: grid; justify-items: center; }
-.dock-item .app-icon { width: 37px; height: 37px; border-radius: 10px; transition: transform .16s; }
-.dock-item .app-icon svg { width: 20px; }
-.dock-item:hover .app-icon { transform: translateY(-3px); }
 .dock-item i { position: absolute; bottom: 0; border-radius: 50%; width: 4px; height: 4px; }
 .dock-item.running i { background: #a9c1d6; }
 .dock-item.active i { background: var(--accent); box-shadow: 0 0 7px var(--accent); }
@@ -55,8 +40,6 @@ svg { flex-shrink: 0; vertical-align: middle; }
 .app-window.max { border-radius: 0; }
 .window-title { height: 43px; flex: 0 0 43px; display: flex; align-items: center; gap: 9px; padding-left: 13px; border-bottom: 1px solid var(--border); background: color-mix(in srgb,var(--surface) 79%,#0c121e); touch-action: none; user-select: none; }
 .window-title strong { font-weight: 600; font-size: .93em; }
-.title-icon .app-icon { width: 23px; height: 23px; border-radius: 6px; }
-.title-icon svg { width: 14px; }
 .window-controls { display: flex; height: 100%; margin-left: auto; }
 .window-controls button { display: grid; place-items: center; width: 42px; background: none; color: #aab9ca; }
 .window-controls button:hover { background: #bbd5ff17; color: #fff; }
